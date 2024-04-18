@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "calypso",
+  "version": "${version}",
+
+  "name": "Calypso",
+  "description": "",
+  "authors": [],
+  "contact": {},
+
+  "license": "GNU LGPL 3.0",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.lnatit.calypso.fabric.CalypsoFabric"
+    ]
+  },
+  "mixins": [
+    "calypso.mixins.json",
+    "calypso-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.10",
+    "minecraft": ">=1.18"
+  }
+}
