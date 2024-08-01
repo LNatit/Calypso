@@ -22,3 +22,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           arguments: build
+
+      - name: Upload latest file
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Calypso-latest
+          path: build/libs
