@@ -1,0 +1,99 @@
+package com.lnatit.calypso.block;
+
+import com.lnatit.calypso.block.entity.CapacityFurnaceBlockEntity;
+import com.lnatit.calypso.misc.StatRegistry;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
+import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
+public class CapacityFurnaceBlock extends AbstractFurnaceBlock
+{
+    public static final MapCodec<CapacityFurnaceBlock> CODEC = simpleCodec(CapacityFurnaceBlock::new);
+
+    @Override
+    protected MapCodec<? extends AbstractFurnaceBlock> codec() {
+        return CODEC;
+    }
+
+    protected CapacityFurnaceBlock(Properties properties) {
+        super(properties);
+    }
+
+    public CapacityFurnaceBlock() {
+        this(Properties.of().mapColor(MapColor.STONE).instrument(
+                NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(
+                holder -> holder.getValue(BlockStateProperties.LIT) ? 13 : 0));
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new CapacityFurnaceBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return !level.isClientSide && blockEntityType == BlockRegistry.CAPACITY_FURNACE_BETYPE.get() ? (BlockEntityTicker<T>) (BlockEntityTicker<CapacityFurnaceBlockEntity>) CapacityFurnaceBlockEntity::serverTick : null;
+    }
+
+    @Override
+    protected void openContainer(Level level, BlockPos pos, Player player) {
+        BlockEntity blockentity = level.getBlockEntity(pos);
+        if (blockentity instanceof CapacityFurnaceBlockEntity) {
+            player.openMenu((MenuProvider) blockentity);
+            player.awardStat(StatRegistry.INTERACT_WITH_CAPACITY_FURNACE.get());
+        }
+    }
+
+    @Override
+    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+        // TODO
+        return 0;
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (state.getValue(LIT)) {
+            double d0 = (double) pos.getX() + 0.5;
+            double d1 = pos.getY();
+            double d2 = (double) pos.getZ() + 0.5;
+            if (random.nextDouble() < 0.1) {
+                level.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F,
+                                     false
+                );
+            }
+
+            Direction direction = state.getValue(FACING);
+            Direction.Axis direction$axis = direction.getAxis();
+            double d3 = 0.52;
+            double d4 = random.nextDouble() * 0.6 - 0.3;
+            double d5 = direction$axis == Direction.Axis.X ? (double) direction.getStepX() * d3 : d4;
+            double d6 = random.nextDouble() * 6.0 / 16.0;
+            double d7 = direction$axis == Direction.Axis.Z ? (double) direction.getStepZ() * d3 : d4;
+            level.addParticle(ParticleTypes.SMOKE, d0 + d5, d1 + d6, d2 + d7, 0.0, 0.0, 0.0);
+            level.addParticle(ParticleTypes.FLAME, d0 + d5, d1 + d6, d2 + d7, 0.0, 0.0, 0.0);
+        }
+    }
+}
