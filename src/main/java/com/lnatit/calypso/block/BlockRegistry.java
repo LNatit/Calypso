@@ -1,6 +1,7 @@
 package com.lnatit.calypso.block;
 
 import com.lnatit.calypso.block.entity.CapacityFurnaceBlockEntity;
+import com.lnatit.calypso.block.entity.RecycleBinBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -16,6 +17,9 @@ public class BlockRegistry
     public static final DeferredBlock<CapacityFurnaceBlock> CAPACITY_FURNACE = BLOCKS.register("capacity_furnace",
                                                                                                () -> new CapacityFurnaceBlock()
     );
+    public static final DeferredBlock<RecycleBinBlock> RECYCLE_BIN = BLOCKS.register("recycle_bin",
+                                                                                     () -> new RecycleBinBlock()
+    );
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(
             Registries.BLOCK_ENTITY_TYPE, MOD_ID);
@@ -23,5 +27,8 @@ public class BlockRegistry
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CapacityFurnaceBlockEntity>> CAPACITY_FURNACE_BETYPE = BLOCK_ENTITY_TYPES.register(
             "capacity_furnace",
             () -> BlockEntityType.Builder.of(CapacityFurnaceBlockEntity::new, CAPACITY_FURNACE.get()).build(null)
+    );
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RecycleBinBlockEntity>> RECYCLE_BIN_BETYPE = BLOCK_ENTITY_TYPES.register(
+            "recycle_bin", () -> BlockEntityType.Builder.of(RecycleBinBlockEntity::new, RECYCLE_BIN.get()).build(null)
     );
 }

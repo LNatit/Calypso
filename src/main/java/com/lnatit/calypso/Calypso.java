@@ -1,7 +1,7 @@
 package com.lnatit.calypso;
 
 import com.lnatit.calypso.block.BlockRegistry;
-import com.lnatit.calypso.gui.GuiRegistry;
+import com.lnatit.calypso.inventory.InventoryRegistry;
 import com.lnatit.calypso.item.ItemRegistry;
 import com.lnatit.calypso.misc.StatRegistry;
 import com.mojang.logging.LogUtils;
@@ -24,7 +24,7 @@ public class Calypso
         ItemRegistry.ITEMS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
         BlockRegistry.BLOCK_ENTITY_TYPES.register(modBus);
-        GuiRegistry.MENUS.register(modBus);
+        InventoryRegistry.MENUS.register(modBus);
         StatRegistry.STATS.register(modBus);
     }
 }

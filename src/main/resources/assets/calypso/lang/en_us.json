@@ -1,5 +1,7 @@
 {
     "block.calypso.capacity_furnace": "Capacity Furnace",
+    "block.calypso.recycle_bin": "Recycle Bin",
     "container.calypso.capacity_furnace": "Capacity Furnace",
+    "container.calypso.recycle_bin": "Recycle Bin",
     "stat.calypso.interact_with_capacity_furnace": "Interact with Capacity Furnace"
 }

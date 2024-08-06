@@ -17,4 +17,8 @@ public class StatRegistry
             "interact_with_capacity_furnace",
             () -> ResourceLocation.fromNamespaceAndPath(MOD_ID, "interact_with_capacity_furnace")
     );
+    public static final DeferredHolder<ResourceLocation, ResourceLocation> INTERACT_WITH_RECYCLE_BIN = STATS.register(
+            "interact_with_recycle_bin",
+            () -> ResourceLocation.fromNamespaceAndPath(MOD_ID, "interact_with_recycle_bin")
+    );
 }

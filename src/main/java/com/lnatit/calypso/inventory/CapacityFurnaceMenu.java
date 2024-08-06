@@ -1,4 +1,4 @@
-package com.lnatit.calypso.gui;
+package com.lnatit.calypso.inventory;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.Container;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import static com.lnatit.calypso.gui.GuiRegistry.CAPACITY_FURNACE;
+import static com.lnatit.calypso.inventory.InventoryRegistry.CAPACITY_FURNACE;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -137,21 +137,25 @@ public class CapacityFurnaceMenu extends AbstractFurnaceMenu
                 slot.onQuickCraft(target, itemstack);
             }
             else if (index >= INV_SLOT_START) {
-                if (this.canSmelt(target)
-                        && !this.moveItemStackTo(target, INGREDIENT_SLOT_START, INGREDIENT_SLOT_END, false)) {
-                    return ItemStack.EMPTY;
+                if (this.canSmelt(target)) {
+                    if (!this.moveItemStackTo(target, INGREDIENT_SLOT_START, INGREDIENT_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
-                else if (this.isFuel(target)
-                        && !this.moveItemStackTo(target, FUEL_SLOT_START, FUEL_SLOT_END, false)) {
-                    return ItemStack.EMPTY;
+                else if (this.isFuel(target)) {
+                    if (!this.moveItemStackTo(target, FUEL_SLOT_START, FUEL_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
-                else if (index < INV_SLOT_END
-                        && !this.moveItemStackTo(target, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
-                    return ItemStack.EMPTY;
+                else if (index < INV_SLOT_END) {
+                    if (!this.moveItemStackTo(target, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
-                else if (index < USE_ROW_SLOT_END
-                        && !this.moveItemStackTo(target, INV_SLOT_START, INV_SLOT_END, false)) {
-                    return ItemStack.EMPTY;
+                else if (index < USE_ROW_SLOT_END) {
+                    if (!this.moveItemStackTo(target, INV_SLOT_START, INV_SLOT_END, false)) {
+                        return ItemStack.EMPTY;
+                    }
                 }
             }
             else if (!this.moveItemStackTo(target, INV_SLOT_START, USE_ROW_SLOT_END, false)) {

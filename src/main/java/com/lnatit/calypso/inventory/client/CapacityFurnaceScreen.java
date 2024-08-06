@@ -1,6 +1,6 @@
-package com.lnatit.calypso.gui.client;
+package com.lnatit.calypso.inventory.client;
 
-import com.lnatit.calypso.gui.CapacityFurnaceMenu;
+import com.lnatit.calypso.inventory.CapacityFurnaceMenu;
 import net.minecraft.client.gui.screens.inventory.AbstractFurnaceScreen;
 import net.minecraft.client.gui.screens.recipebook.SmeltingRecipeBookComponent;
 import net.minecraft.network.chat.Component;
@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class CapacityFurnaceScreen extends AbstractFurnaceScreen<CapacityFurnaceMenu>
 {
+    // TODO
     private static final ResourceLocation LIT_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/lit_progress");
     private static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
     private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");

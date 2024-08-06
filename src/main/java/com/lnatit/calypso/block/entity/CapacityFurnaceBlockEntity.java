@@ -1,6 +1,6 @@
 package com.lnatit.calypso.block.entity;
 
-import com.lnatit.calypso.gui.CapacityFurnaceMenu;
+import com.lnatit.calypso.inventory.CapacityFurnaceMenu;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -202,7 +202,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
         mergeItems(SLOT_INGREDIENT);
         mergeItems(SLOT_FUEL);
 
-        LinkedList<ItemStack> itemsCopy = new LinkedList<>(items);
+        LinkedList<ItemStack> itemsCopy = new LinkedList<>(this.items);
         for (int index = SLOT_INGREDIENT + 2; index >= SLOT_INGREDIENT; index--) {
             if (itemsCopy.get(index).isEmpty()) {
                 itemsCopy.remove(index);

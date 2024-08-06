@@ -1,6 +1,6 @@
-package com.lnatit.calypso.gui.client;
+package com.lnatit.calypso.inventory.client;
 
-import com.lnatit.calypso.gui.GuiRegistry;
+import com.lnatit.calypso.inventory.InventoryRegistry;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,6 +13,7 @@ public class ScreenRegistry
 {
     @SubscribeEvent
     public static void onScreenRegister(RegisterMenuScreensEvent event) {
-        event.register(GuiRegistry.CAPACITY_FURNACE.get(), CapacityFurnaceScreen::new);
+        event.register(InventoryRegistry.CAPACITY_FURNACE.get(), CapacityFurnaceScreen::new);
+        event.register(InventoryRegistry.RECYCLE_BIN.get(), RecycleBinScreen::new);
     }
 }
