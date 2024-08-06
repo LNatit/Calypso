@@ -10,8 +10,11 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.LinkedList;
 
 import static com.lnatit.calypso.block.BlockRegistry.RECYCLE_BIN_BETYPE;
 
@@ -65,19 +68,37 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     }
 
     private void rearrangeItems() {
-        ItemStack stack = this.items.get(SLOT_INPUT);
-        if (!stack.isEmpty()) {
-            this.items.set(SLOT_INPUT, ItemStack.EMPTY);
-            for (int i = 0; i < SLOT_INPUT; i++) {
-                ItemStack curr = this.items.get(i);
-                this.items.set(i, stack);
-                if (curr.isEmpty()) {
-                    return;
-                }
-                else {
-                    stack = curr;
+        ItemStack input = this.items.get(SLOT_INPUT);
+        if (!input.isEmpty()) {
+            // fill the last-put slot first
+            LinkedList<ItemStack> bufCopy = new LinkedList<>(this.items.subList(0, SLOT_INPUT));
+            bufCopy.add(0, input);
+            int diff = Math.min(input.getMaxStackSize(), this.getMaxStackSize()) - input.getCount();
+            for (int i = SLOT_INPUT; i > 0; i--) {
+                ItemStack curr = bufCopy.get(i);
+                if (!curr.isEmpty() && ItemStack.isSameItemSameComponents(curr, input)) {
+                    int count = curr.getCount();
+                    if (count > diff) {
+                        curr.shrink(diff);
+                        input.grow(diff);
+                        break;
+                    }
+                    else {
+                        bufCopy.remove(i);
+                        input.grow(count);
+                        diff -= count;
+                        if (diff == 0) {
+                            break;
+                        }
+                    }
                 }
             }
+
+            for (int i = 0; i < SLOT_INPUT; i++)
+            {
+                this.items.set(i, bufCopy.get(i));
+            }
+            this.items.set(SLOT_INPUT, ItemStack.EMPTY);
         }
     }
 
