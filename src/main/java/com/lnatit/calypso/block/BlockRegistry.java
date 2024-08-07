@@ -8,11 +8,11 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import static com.lnatit.calypso.Calypso.MOD_ID;
+import static com.lnatit.calypso.Calypso.MODID;
 
 public class BlockRegistry
 {
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MOD_ID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<CapacityFurnaceBlock> CAPACITY_FURNACE = BLOCKS.register("capacity_furnace",
                                                                                                () -> new CapacityFurnaceBlock()
@@ -22,7 +22,7 @@ public class BlockRegistry
     );
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(
-            Registries.BLOCK_ENTITY_TYPE, MOD_ID);
+            Registries.BLOCK_ENTITY_TYPE, MODID);
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CapacityFurnaceBlockEntity>> CAPACITY_FURNACE_BETYPE = BLOCK_ENTITY_TYPES.register(
             "capacity_furnace",

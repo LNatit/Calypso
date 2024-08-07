@@ -7,9 +7,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import static com.lnatit.calypso.Calypso.MOD_ID;
+import static com.lnatit.calypso.Calypso.MODID;
 
-@EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGen
 {
     @SubscribeEvent

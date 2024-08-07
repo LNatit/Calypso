@@ -6,9 +6,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
-import static com.lnatit.calypso.Calypso.MOD_ID;
+import static com.lnatit.calypso.Calypso.MODID;
 
-@EventBusSubscriber(value = Dist.CLIENT, modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(value = Dist.CLIENT, modid = MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ScreenRegistry
 {
     @SubscribeEvent
