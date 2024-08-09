@@ -3,10 +3,9 @@ package com.lnatit.calypso.resource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.lnatit.calypso.ModRegistries;
+import com.lnatit.calypso.network.PhotoStandDataUpdatePacket;
 import com.lnatit.calypso.resource.photostand.PhotoStand;
 import com.mojang.logging.LogUtils;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,12 +18,12 @@ import java.util.*;
 public class PhotoStandManager extends SimpleJsonResourceReloadListener
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Gson GSON = new GsonBuilder().create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     private HashMap<ResourceLocation, PhotoStand> photoStands = new HashMap<>();
 
     public PhotoStandManager() {
-        super(GSON, Registries.elementsDirPath(ModRegistries.PHOTO_STAND));
+        super(GSON, "photo_stand");
     }
 
     @Override
@@ -47,11 +46,15 @@ public class PhotoStandManager extends SimpleJsonResourceReloadListener
         return this.photoStands.get(location);
     }
 
-    public void updatePhotoStands(HashMap<ResourceLocation, PhotoStand> photoStands) {
-        this.photoStands.clear();
-    }
-
     public Set<ResourceLocation> getResourceLocations() {
         return this.photoStands.keySet();
+    }
+
+    public PhotoStandDataUpdatePacket generateUpdatePacket() {
+        return new PhotoStandDataUpdatePacket(this.photoStands);
+    }
+
+    public void acceptUpdatePacket(PhotoStandDataUpdatePacket packet) {
+        this.photoStands = packet.data();
     }
 }

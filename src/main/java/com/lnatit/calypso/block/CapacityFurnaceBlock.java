@@ -36,7 +36,7 @@ public class CapacityFurnaceBlock extends AbstractFurnaceBlock
         return CODEC;
     }
 
-    protected CapacityFurnaceBlock(Properties properties) {
+    private CapacityFurnaceBlock(Properties properties) {
         super(properties);
     }
 

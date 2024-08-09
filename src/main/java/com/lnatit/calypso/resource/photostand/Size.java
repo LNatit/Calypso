@@ -9,19 +9,19 @@ import net.minecraft.resources.ResourceLocation;
 
 import static com.lnatit.calypso.Calypso.MODID;
 
-public record Texture(int width, int height)
+public record Size(int width, int height)
 {
     public static final ResourceLocation EMPTY = ResourceLocation.fromNamespaceAndPath(MODID, "empty");
 
-    public static final Codec<Texture> CODEC = RecordCodecBuilder.create(ins -> ins.group(
+    public static final Codec<Size> CODEC = RecordCodecBuilder.create(ins -> ins.group(
             Codec.INT.fieldOf("width").forGetter(o -> o.width),
             Codec.INT.fieldOf("height").forGetter(o -> o.height)
-    ).apply(ins, Texture::new));
-    public static final StreamCodec<ByteBuf, Texture> STREAM_CODEC = StreamCodec.composite(
+    ).apply(ins, Size::new));
+    public static final StreamCodec<ByteBuf, Size> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT,
-            Texture::width,
+            Size::width,
             ByteBufCodecs.VAR_INT,
-            Texture::height,
-            Texture::new
+            Size::height,
+            Size::new
     );
 }

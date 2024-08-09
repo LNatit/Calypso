@@ -15,4 +15,5 @@ public class ItemRegistry
     public static final DeferredItem<Item> TEST = ITEMS.registerItem("test", Item::new);
     public static final DeferredItem<BlockItem> CAPACITY_FURNACE = ITEMS.registerSimpleBlockItem(BlockRegistry.CAPACITY_FURNACE);
     public static final DeferredItem<BlockItem> RECYCLE_BIN = ITEMS.registerSimpleBlockItem(BlockRegistry.RECYCLE_BIN);
+    public static final DeferredItem<BlockItem> CUTOUT_PHOTO_STAND = ITEMS.registerSimpleBlockItem(BlockRegistry.CUTOUT_PHOTO_STAND);
 }

@@ -30,6 +30,6 @@ public record PhotoStandDataUpdatePacket(HashMap<ResourceLocation, PhotoStand> d
     }
 
     public static void handle(final PhotoStandDataUpdatePacket packet, IPayloadContext context) {
-        ResourceRegistry.PHOTO_STAND_MANAGER.updatePhotoStands(packet.data);
+        ResourceRegistry.PHOTO_STAND_MANAGER.acceptUpdatePacket(packet);
     }
 }

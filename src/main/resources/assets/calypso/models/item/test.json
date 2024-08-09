@@ -1,5 +1,5 @@
 {
-    "parent": "minecraft:item/generated",
+    "parent": "builtin/generated",
     "textures": {
         "layer0": "calypso:item/test"
     }
