@@ -1,9 +1,9 @@
 
-### TODO list
+### TODO List
 
 #### 扩容炉
 
-- 调整纹理 [MenuOffsets.java](src/main/java/com/lnatit/calypso/inventory/MenuOffsets.java)
+- 纹理重构 [MenuOffsets.java](src/main/java/com/lnatit/calypso/inventory/MenuOffsets.java)
 
 ### 文件夹快速导航
 
