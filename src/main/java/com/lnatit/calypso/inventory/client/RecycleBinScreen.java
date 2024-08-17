@@ -15,12 +15,23 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
     public static final ResourceLocation SPARK_SPRITE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/sprites/destruction_spark");
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID, "textures/gui/container/recycle_bin.png");
 
+    private int flameTick = 0;
+    private int sparkTick = 0;
+
     public RecycleBinScreen(RecycleBinMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+        this.titleLabelX += 20 + 9;
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-
+        int i = (this.width - this.imageWidth) / 2;
+        int j = (this.height - this.imageHeight) / 2;
+        guiGraphics.blit(TEXTURE, i, j, 0, 0, 180, this.imageHeight);
     }
 }

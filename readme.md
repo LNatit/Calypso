@@ -1,4 +1,10 @@
 
+### TODO list
+
+#### 扩容炉
+
+- 调整纹理 [MenuOffsets.java](src/main/java/com/lnatit/calypso/inventory/MenuOffsets.java)
+
 ### 文件夹快速导航
 
 #### 纹理文件夹 [Texture Dir](src/main/resources/assets/calypso/textures)

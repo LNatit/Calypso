@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import static com.lnatit.calypso.inventory.InventoryRegistry.CAPACITY_FURNACE;
+import static com.lnatit.calypso.inventory.MenuOffsets.*;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -47,32 +48,33 @@ public class CapacityFurnaceMenu extends AbstractFurnaceMenu
         this.lastSlots.clear();
         this.remoteSlots.clear();
 
-        // TODO fix pos
         // Ingredient Slots
-        for (int i = 0; i < 4; i++) {
-            this.addSlot(new Slot(container, INGREDIENT_SLOT_START + i, 56 + 18 - i * 18, 17));
+        this.addSlot(new Slot(container, INGREDIENT_SLOT_START, CF_WORKSPACE_X + 75, CF_WORKSPACE_Y + 22));
+        for (int i = 1; i < 4; i++) {
+            this.addSlot(new Slot(container, INGREDIENT_SLOT_START + i, CF_WORKSPACE_X + 44 + 18 - i * 18, CF_WORKSPACE_Y + 18 + 2 - i * 2));
         }
         // Fuel Slots
-        for (int i = 0; i < 4; i++) {
-            this.addSlot(new FurnaceFuelSlot(this, container, FUEL_SLOT_START + i, 56 + 18 - i * 18, 53));
+        this.addSlot(new FurnaceFuelSlot(this, container, FUEL_SLOT_START, CF_WORKSPACE_X + 75, CF_WORKSPACE_Y + 57));
+        for (int i = 1; i < 4; i++) {
+            this.addSlot(new FurnaceFuelSlot(this, container, FUEL_SLOT_START + i, CF_WORKSPACE_X + 44 + 18 - i * 18, CF_WORKSPACE_Y + 53 + 2 - i * 2));
         }
         // Result Slots
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 this.addSlot(new FurnaceResultSlot(playerInventory.player, container, RESULT_SLOT_START + 2 * j + i,
-                                                   116 + 18 * i, 26 + 18 * j
+                                                   CF_WORKSPACE_X + 125 + 18 * i, CF_WORKSPACE_Y + 28 + 18 * j
                 ));
             }
         }
         // Player's Inventory
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 9; j++) {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, CF_INVENTORY_X + 8 + j * 18, CF_INVENTORY_Y + 84 + i * 18));
             }
         }
 
         for (int k = 0; k < 9; k++) {
-            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 142));
+            this.addSlot(new Slot(playerInventory, k, CF_INVENTORY_X + 8 + k * 18, CF_INVENTORY_Y + 142));
         }
     }
 

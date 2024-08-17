@@ -34,22 +34,20 @@ public class RecycleBinMenu extends AbstractContainerMenu
 
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 9; k++) {
-                this.addSlot(new RecycleSlot(container, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new RecycleSlot(container, k + j * 9, 8 + k * 18, 32 + j * 18));
             }
         }
         // the ordinal matters!!!
-        this.addSlot(new Slot(container, INPUT_SLOT, 1, 1));
-
-        int i = -10;
+        this.addSlot(new Slot(container, INPUT_SLOT, 9, 8));
 
         for (int l = 0; l < 3; l++) {
             for (int j1 = 0; j1 < 9; j1++) {
-                this.addSlot(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
+                this.addSlot(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 88 + l * 18));
             }
         }
 
         for (int i1 = 0; i1 < 9; i1++) {
-            this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 161 + i));
+            this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 144));
         }
     }
 
