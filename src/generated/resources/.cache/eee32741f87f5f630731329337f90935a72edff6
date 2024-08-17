@@ -1,0 +1,10 @@
+// 1.21	2024-08-17T16:49:16.573982	Block States: calypso
+3415d03ccbf2d0bd22d20b450e9452b1293e2ee0 assets/calypso/blockstates/capacity_furnace.json
+57bb1335267ba6e9e1359fa6ac94d5c4d37b15b1 assets/calypso/blockstates/photo_stand_core.json
+4e13adb7300ef387cc4a8075430bc77fcb14a288 assets/calypso/blockstates/photo_stand_part.json
+769c079ce2816645bd02cdecbfc96631c5c8ef98 assets/calypso/models/block/capacity_furnace.json
+cf842f16ec7d91d5a75b19175b597355cd47bcce assets/calypso/models/block/capacity_furnace_on.json
+086e433a76c43873700c8c81acffce30729fa0c3 assets/calypso/models/block/photo_stand_core.json
+c047b702df4759d8d8d950f1455732332dc4eeef assets/calypso/models/block/photo_stand_part.json
+167d438972c2fa9a656fd843d4d0acfdb4c5f0e5 assets/calypso/models/item/capacity_furnace.json
+478af1c5905992b17c62d05484b57a933c5d98e7 assets/calypso/models/item/photo_stand_core.json

@@ -12,10 +12,10 @@ import org.slf4j.Logger;
 
 import static com.lnatit.calypso.Calypso.*;
 
-@Mod(MOD_ID)
+@Mod(MODID)
 public class Calypso
 {
-    public static final String MOD_ID = "calypso";
+    public static final String MODID = "calypso";
     public static final Logger LOGGER = LogUtils.getLogger();
 
 

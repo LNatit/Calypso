@@ -1,0 +1,18 @@
+{
+    "texture": {
+        "width": 32,
+        "height": 32,
+        "location": "calypso:photo_stand/default"
+    },
+    "cutouts": [
+        {
+            "pos": 12,
+            "offset": 0
+        },
+        {
+            "pos": 24,
+            "offset": 2
+        }
+    ],
+    "_comment_": "Example of custom photo stand"
+}
