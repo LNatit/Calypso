@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "calypso:block/capacity_furnace_front",
+    "side": "calypso:block/capacity_furnace_side",
+    "top": "calypso:block/capacity_furnace_top"
+  }
+}
