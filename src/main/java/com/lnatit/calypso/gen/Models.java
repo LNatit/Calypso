@@ -1,8 +1,9 @@
 package com.lnatit.calypso.gen;
 
+import com.lnatit.calypso.block.BlockRegistry;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import static com.lnatit.calypso.Calypso.MODID;
@@ -32,7 +33,8 @@ public class Models
         @Override
         protected void registerStatesAndModels() {
 //            this.simpleBlockWithItem();
-
+            this.simpleBlock(BlockRegistry.PHOTO_STAND_PART.get(), models().getBuilder("photo_stand_part").renderType("cutout").ao(false));
+            this.simpleBlockWithItem(BlockRegistry.PHOTO_STAND_CORE.get(), cubeAll(BlockRegistry.PHOTO_STAND_CORE.get()));
         }
     }
 }

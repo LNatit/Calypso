@@ -21,7 +21,7 @@ public class RecycleBinBlock extends BaseEntityBlock
 {
     public static final MapCodec<RecycleBinBlock> CODEC = simpleCodec(RecycleBinBlock::new);
 
-    protected RecycleBinBlock(Properties properties) {
+    private RecycleBinBlock(Properties properties) {
         super(properties);
     }
 

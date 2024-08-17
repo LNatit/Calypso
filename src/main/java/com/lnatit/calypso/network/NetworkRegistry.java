@@ -14,10 +14,10 @@ public class NetworkRegistry
 
     @SubscribeEvent
     public static void onPayloadHandlerRegister(RegisterPayloadHandlersEvent event) {
-        event.registrar(NETWORK_VERSION).playToClient(
-                PhotoStandDataUpdatePacket.TYPE,
-                PhotoStandDataUpdatePacket.STREAM_CODEC,
-                new MainThreadPayloadHandler<>(PhotoStandDataUpdatePacket::handle)
-        );
+//        event.registrar(NETWORK_VERSION).playToClient(
+//                PhotoStandDataUpdatePacket.TYPE,
+//                PhotoStandDataUpdatePacket.STREAM_CODEC,
+//                new MainThreadPayloadHandler<>(PhotoStandDataUpdatePacket::handle)
+//        );
     }
 }
