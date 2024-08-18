@@ -32,6 +32,10 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
     @Override
     protected void init() {
         super.init();
+        /*
+          TODO 标题位置调整
+          image 对应贴图， font 对应文字
+         */
         this.titleLabelX = this.imageWidth - 8 - this.font.width(title);
     }
 
@@ -68,7 +72,7 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
             for (int i = 0; i < diff; i++) {
                 SPARKLES.add(new Sparkle());
             }
-            // TODO 修改火花和火苗的相对位置，让两者视觉上对齐（修改 + 0 ）
+            // TODO 修改火花和火苗的相对位置，让两者视觉上对齐
             SPARKLES.removeIf(s -> s.render(guiGraphics, flameX + 0, flameY + 0));
             return SPARKLES.size();
         }

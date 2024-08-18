@@ -7,6 +7,7 @@
 
 #### 垃圾桶
 
+- 标题位置调整 [RecycleBinScreen.java](src/main/java/com/lnatit/calypso/inventory/client/RecycleBinScreen.java)
 - 火花视觉效果调整 [RecycleBinScreen.java](src/main/java/com/lnatit/calypso/inventory/client/RecycleBinScreen.java)
 
 ### 文件夹快速导航
