@@ -9,8 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -23,7 +23,30 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     public static final int SLOT_INPUT = 27;
     public static final Component DEFAULT_NAME = Component.translatable("container.calypso.recycle_bin");
 
+    private int destoryCounter = 0;
     private NonNullList<ItemStack> items = NonNullList.withSize(28, ItemStack.EMPTY);
+    private final ContainerData dataAccess = new ContainerData()
+    {
+        @Override
+        public int get(int index) {
+            if (index == 0) {
+                return RecycleBinBlockEntity.this.destoryCounter;
+            }
+            return 0;
+        }
+
+        @Override
+        public void set(int index, int value) {
+            if (index == 0) {
+                RecycleBinBlockEntity.this.destoryCounter = value;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    };
 
     public RecycleBinBlockEntity(BlockPos pos, BlockState blockState) {
         super(RECYCLE_BIN_BETYPE.get(), pos, blockState);
@@ -49,7 +72,7 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     @Override
     protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
         rearrangeItems();
-        return new RecycleBinMenu(containerId, inventory, this);
+        return new RecycleBinMenu(containerId, inventory, this, this.dataAccess);
     }
 
     @Override
@@ -70,33 +93,50 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     private void rearrangeItems() {
         ItemStack input = this.items.get(SLOT_INPUT);
         if (!input.isEmpty()) {
-            // fill the last-put slot first
             LinkedList<ItemStack> bufCopy = new LinkedList<>(this.items.subList(0, SLOT_INPUT));
-            bufCopy.add(0, input);
+            bufCopy.addFirst(input);
+            int firstEmpty = SLOT_INPUT;
             int diff = Math.min(input.getMaxStackSize(), this.getMaxStackSize()) - input.getCount();
             for (int i = SLOT_INPUT; i > 0; i--) {
                 ItemStack curr = bufCopy.get(i);
-                if (!curr.isEmpty() && ItemStack.isSameItemSameComponents(curr, input)) {
+                if (curr.isEmpty()) {
+                    firstEmpty = i;
+                }
+                else if (diff > 0 && ItemStack.isSameItemSameComponents(curr, input)) {
                     int count = curr.getCount();
                     if (count > diff) {
                         curr.shrink(diff);
                         input.grow(diff);
-                        break;
+                        diff = 0;
                     }
                     else {
-                        bufCopy.remove(i);
+                        bufCopy.set(i, ItemStack.EMPTY);
+                        firstEmpty = i;
                         input.grow(count);
                         diff -= count;
-                        if (diff == 0) {
-                            break;
-                        }
                     }
                 }
             }
 
-            for (int i = 0; i < SLOT_INPUT; i++)
-            {
+            if (firstEmpty != SLOT_INPUT) {
+                bufCopy.remove(firstEmpty);
+            }
+
+//            // Then try shift the queue
+//            for (int i = 0; i < SLOT_INPUT; i++) {
+//                // Remove one empty stack is enough
+//                if (bufCopy.get(i).isEmpty()) {
+//                    bufCopy.remove(i);
+//                    break;
+//                }
+//            }
+
+
+            for (int i = 0; i < SLOT_INPUT; i++) {
                 this.items.set(i, bufCopy.get(i));
+            }
+            if (bufCopy.size() > SLOT_INPUT && !bufCopy.get(SLOT_INPUT).isEmpty()) {
+                this.destoryCounter++;
             }
             this.items.set(SLOT_INPUT, ItemStack.EMPTY);
         }
@@ -104,7 +144,7 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
 
     @Override
     public void setChanged() {
-        rearrangeItems();
         super.setChanged();
+        rearrangeItems();
     }
 }

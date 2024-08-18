@@ -6,6 +6,8 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +16,7 @@ import static com.lnatit.calypso.inventory.InventoryRegistry.RECYCLE_BIN;
 public class RecycleBinMenu extends AbstractContainerMenu
 {
     public static final int CONTAINER_SIZE = 28;
+    public static final int DATA_SIZE = 1;
     public static final int INPUT_SLOT = 27;
     private static final int INV_SLOT_START = 28;
     private static final int INV_SLOT_END = 55;
@@ -21,16 +24,18 @@ public class RecycleBinMenu extends AbstractContainerMenu
     private static final int USE_ROW_SLOT_END = 64;
 
     private final Container container;
+    private final ContainerData containerData;
 
     public RecycleBinMenu(int containerId, Inventory playerInventory) {
-        this(containerId, playerInventory, new SimpleContainer(CONTAINER_SIZE));
+        this(containerId, playerInventory, new SimpleContainer(CONTAINER_SIZE), new SimpleContainerData(DATA_SIZE));
     }
 
-    public RecycleBinMenu(int containerId, Inventory playerInventory, Container container)
+    public RecycleBinMenu(int containerId, Inventory playerInventory, Container container, ContainerData data)
     {
         super(RECYCLE_BIN.get(), containerId);
         checkContainerSize(container, CONTAINER_SIZE);
         this.container = container;
+        this.containerData = data;
 
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 9; k++) {
@@ -49,6 +54,18 @@ public class RecycleBinMenu extends AbstractContainerMenu
         for (int i1 = 0; i1 < 9; i1++) {
             this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 144));
         }
+
+        this.addDataSlots(containerData);
+    }
+
+    public int getDestroyCount()
+    {
+        return this.containerData.get(0);
+    }
+
+    public void setDestoryCount(int count)
+    {
+        this.containerData.set(0, count);
     }
 
     @Override
