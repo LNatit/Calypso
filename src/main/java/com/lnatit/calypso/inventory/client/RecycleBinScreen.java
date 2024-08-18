@@ -62,9 +62,9 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
     private static class Sparkle
     {
         // TODO 火花从第五帧才开始出现，感觉有点迟滞，如果想调整火花出现的时机，请在 0~4 之间调整这个值
-        static final int START_FRAME = 4;
+        static final int START_FRAME = 1;
         static final int MAX_FRAMES = 30 - START_FRAME;
-        static final long MS_PER_FRAME = 100;
+        static final long MS_PER_FRAME = 50;
         static final List<Sparkle> SPARKLES = new LinkedList<>();
 
         static int renderSparkles(int spCount, GuiGraphics guiGraphics, int flameX, int flameY) {
@@ -73,7 +73,7 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
                 SPARKLES.add(new Sparkle());
             }
             // TODO 修改火花和火苗的相对位置，让两者视觉上对齐
-            SPARKLES.removeIf(s -> s.render(guiGraphics, flameX + 0, flameY + 0));
+            SPARKLES.removeIf(s -> s.render(guiGraphics, flameX + 9, flameY + -9));
             return SPARKLES.size();
         }
 
