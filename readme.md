@@ -4,7 +4,10 @@
 #### 扩容炉
 
 - ~~纹理重构 [MenuOffsets.java](src/main/java/com/lnatit/calypso/inventory/MenuOffsets.java)~~
-- 垃圾桶火花视觉效果调整 [RecycleBinScreen.java](src/main/java/com/lnatit/calypso/inventory/client/RecycleBinScreen.java)
+
+#### 垃圾桶
+
+- 火花视觉效果调整 [RecycleBinScreen.java](src/main/java/com/lnatit/calypso/inventory/client/RecycleBinScreen.java)
 
 ### 文件夹快速导航
 
