@@ -74,14 +74,14 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
     public static void serverTick(Level level, BlockPos pos, BlockState state, CapacityFurnaceBlockEntity blockEntity) {
         boolean litOld = blockEntity.isLit();
         boolean changed = false;
+        int ingredientIndex = blockEntity.getInputSlot(SLOT_INGREDIENT);
+
         if (litOld) {
             blockEntity.litTime--;
         }
 
         if (blockEntity.slotsChanged) {
             blockEntity.rearrangeItems();
-
-            int ingredientIndex = blockEntity.getInputSlot(SLOT_INGREDIENT);
             ItemStack ingredient = blockEntity.items.get(ingredientIndex);
 
             if (blockEntity.holder == null || !ingredient.isEmpty()) {
@@ -116,7 +116,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
                 if (blockEntity.cookingProgress == blockEntity.cookingTotalTime) {
                     blockEntity.cookingProgress = 0;
                     blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);
-                    if (burn(level.registryAccess(), blockEntity.holder, blockEntity)) {
+                    if (burn(level.registryAccess(), blockEntity.holder, blockEntity, ingredientIndex)) {
                         blockEntity.setRecipeUsed(blockEntity.holder);
                     }
 
@@ -136,7 +136,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
         }
     }
 
-    // Only check whether the input is able to smelt & output slot is av available.
+    // Only check whether the input is able to smelt & output slot is available.
     // Won't modify BlockEntity.
     private static boolean canBurn(RegistryAccess registryAccess, @javax.annotation.Nullable RecipeHolder<? extends AbstractCookingRecipe> recipe, CapacityFurnaceBlockEntity furnace) {
         ItemStack ingredient = furnace.items.get(SLOT_INGREDIENT);
@@ -149,9 +149,9 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
         }
     }
 
-    private static boolean burn(RegistryAccess registryAccess, @javax.annotation.Nullable RecipeHolder<? extends AbstractCookingRecipe> recipe, CapacityFurnaceBlockEntity furnace) {
+    private static boolean burn(RegistryAccess registryAccess, @javax.annotation.Nullable RecipeHolder<? extends AbstractCookingRecipe> recipe, CapacityFurnaceBlockEntity furnace, int ingredientSlot) {
         if (recipe != null) {
-            ItemStack ingredient = furnace.items.get(SLOT_INGREDIENT);
+            ItemStack ingredient = furnace.items.get(ingredientSlot);
             ItemStack simResult = recipe.value().assemble(new SingleRecipeInput(ingredient), registryAccess);
 
             furnace.tryMergeToResult(simResult, false);
@@ -162,6 +162,18 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
             }
 
             ingredient.shrink(1);
+            // rearrange the ingredients
+            if (ingredient.isEmpty()) {
+                furnace.slotsChanged = true;
+                for (int i = ingredientSlot + 1; i < SLOT_FUEL; ++i) {
+                    ItemStack curr = furnace.items.get(i);
+                    furnace.items.set(i - 1, curr);
+                    if (curr.isEmpty()) {
+                        return true;
+                    }
+                }
+                furnace.items.set(SLOT_FUEL - 1, ItemStack.EMPTY);
+            }
             return true;
         }
         else {
@@ -209,23 +221,6 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
                 itemsCopy.add(SLOT_INGREDIENT + 3, ItemStack.EMPTY);
             }
         }
-
-        // Will not react properly when have multiple buckets ahead
-//        index = SLOT_FUEL;
-//        for (int i = 0; i < 3; i++) {
-//            ItemStack curr = itemsCopy.get(index);
-//            if (curr.isEmpty()) {
-//                itemsCopy.remove(index);
-//                itemsCopy.add(SLOT_FUEL + 3, ItemStack.EMPTY);
-//            }
-//            else {
-//                if (i != 0 && index == SLOT_FUEL && !isFuel(curr)) {
-//                    itemsCopy.set(index, itemsCopy.get(index + 1));
-//                    itemsCopy.set(index + 1, curr);
-//                }
-//                index++;
-//            }
-//        }
 
         int fuelOffset = isFuel(itemsCopy.get(SLOT_FUEL + 3)) ? 1 : 0;
         for (int index = SLOT_FUEL + 2; index >= SLOT_FUEL; index--) {
