@@ -39,6 +39,21 @@ public class Models
 
             // 最后在这里调用方法生成对应模型
             this.registerCapacityFurnace();
+            this.registerRecycleBin();
+        }
+
+        private void registerRecycleBin()
+        {
+            // 获得方块注册项和对应方块
+            var holder = BlockRegistry.RECYCLE_BIN;
+            Block block = holder.get();
+
+            // 好像有个叫uncheckedmodel还是啥，可以智能补全一下试试看
+            ModelFile model = new ModelFile.UncheckedModelFile(holder.getRegisteredName());
+
+
+            // 最后注册方块和物品模型
+            this.simpleBlockWithItem(block, model);
         }
 
         private void registerCapacityFurnace()
