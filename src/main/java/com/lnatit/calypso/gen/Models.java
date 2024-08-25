@@ -42,20 +42,6 @@ public class Models
             this.registerRecycleBin();
         }
 
-        private void registerRecycleBin()
-        {
-            // 获得方块注册项和对应方块
-            var holder = BlockRegistry.RECYCLE_BIN;
-            Block block = holder.get();
-
-            // 好像有个叫uncheckedmodel还是啥，可以智能补全一下试试看
-            ModelFile model = new ModelFile.UncheckedModelFile(holder.getRegisteredName());
-
-
-            // 最后注册方块和物品模型
-            this.simpleBlockWithItem(block, model);
-        }
-
         private void registerCapacityFurnace()
         {
             // 获得方块注册项和对应方块
@@ -83,6 +69,21 @@ public class Models
 
             // 最后注册方块对应的物品模型，拿在手中是默认的未点燃模型
             this.simpleBlockItem(block, defaultModel);
+        }
+
+        private void registerRecycleBin()
+        {
+            // 获得方块注册项和对应方块
+            var holder = BlockRegistry.RECYCLE_BIN;
+            Block block = holder.get();
+
+            // 好像有个叫uncheckedmodel还是啥，可以智能补全一下试试看
+            ModelFile model = new ModelFile.UncheckedModelFile("calypso:block/recycle_bin");
+
+            this.horizontalBlock(block, model);
+
+            // 最后注册方块和物品模型
+            this.simpleBlockItem(block, model);
         }
     }
 }
