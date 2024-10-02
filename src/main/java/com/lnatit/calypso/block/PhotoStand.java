@@ -1,6 +1,5 @@
 package com.lnatit.calypso.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -34,17 +33,12 @@ public class PhotoStand extends HorizontalDirectionalBlock
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return null;
-    }
-
-    @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return STAND;
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return true;
     }
 
@@ -69,16 +63,16 @@ public class PhotoStand extends HorizontalDirectionalBlock
         }
 
         @Override
-        protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
             if (direction.getAxis().isHorizontal()) {
                 if (state.getValue(LEFT_ATTACHED) && direction.getClockWise() == state.getValue(FACING)) {
-                    if (!neighborState.is(BlockRegistry.PHOTO_STAND_PART)) {
+                    if (!neighborState.is(BlockRegistry.PHOTO_STAND_PART.get())) {
                         return Blocks.AIR.defaultBlockState();
                     }
                 }
 
                 if (state.getValue(RIGHT_ATTACHED) && direction.getCounterClockWise() == state.getValue(FACING)) {
-                    if (!neighborState.is(BlockRegistry.PHOTO_STAND_PART)) {
+                    if (!neighborState.is(BlockRegistry.PHOTO_STAND_PART.get())) {
                         return Blocks.AIR.defaultBlockState();
                     }
                 }
@@ -132,12 +126,12 @@ public class PhotoStand extends HorizontalDirectionalBlock
         }
 
         @Override
-        protected RenderShape getRenderShape(BlockState state) {
+        public RenderShape getRenderShape(BlockState state) {
             return RenderShape.INVISIBLE;
         }
 
         @Override
-        protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
             Direction direction = state.getValue(FACING).getOpposite();
             BlockPos attached = pos.relative(direction);
             BlockState attachedState = level.getBlockState(attached);
@@ -150,7 +144,7 @@ public class PhotoStand extends HorizontalDirectionalBlock
         }
 
         @Override
-        protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
             Direction direction = state.getValue(FACING).getOpposite();
             BlockPos attached = pos.relative(direction);
             BlockState attachedState = level.getBlockState(attached);
@@ -163,7 +157,7 @@ public class PhotoStand extends HorizontalDirectionalBlock
         }
 
         @Override
-        protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
             if (direction == state.getValue(FACING).getOpposite() || state.getValue(
                     FRONT_ATTACHED) && direction == state.getValue(FACING)) {
                 return neighborState.is(BlockRegistry.PHOTO_STAND) ? state : Blocks.AIR.defaultBlockState();

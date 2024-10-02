@@ -8,8 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -91,11 +89,6 @@ public class CapacityFurnaceMenu extends AbstractFurnaceMenu
         for (index = RESULT_SLOT_START; index < RESULT_SLOT_END; index++) {
             this.getSlot(index).set(ItemStack.EMPTY);
         }
-    }
-
-    @Override
-    public boolean recipeMatches(RecipeHolder<AbstractCookingRecipe> recipe) {
-        return super.recipeMatches(recipe);
     }
 
     @Override
@@ -191,12 +184,12 @@ public class CapacityFurnaceMenu extends AbstractFurnaceMenu
     }
 
     @Override
-    public float getBurnProgress() {
+    public int getBurnProgress() {
         return super.getBurnProgress();
     }
 
     @Override
-    public float getLitProgress() {
+    public int getLitProgress() {
         return super.getLitProgress();
     }
 

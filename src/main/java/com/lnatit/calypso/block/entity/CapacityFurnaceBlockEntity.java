@@ -13,9 +13,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Blocks;
@@ -41,7 +39,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
     public static final Component DEFAULT_NAME = Component.translatable("container.calypso.capacity_furnace");
 
     private boolean slotsChanged = true;
-    private RecipeHolder<? extends AbstractCookingRecipe> holder = null;
+    private AbstractCookingRecipe recipe = null;
 
     public CapacityFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
         super(CAPACITY_FURNACE_BETYPE.get(), pos, blockState, RecipeType.SMELTING);
@@ -84,15 +82,15 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
             blockEntity.rearrangeItems();
             ItemStack ingredient = blockEntity.items.get(ingredientIndex);
 
-            if (blockEntity.holder == null || !ingredient.isEmpty()) {
-                blockEntity.holder = blockEntity.quickCheck.getRecipeFor(new SingleRecipeInput(ingredient),
+            if (blockEntity.recipe == null || !ingredient.isEmpty()) {
+                blockEntity.recipe = blockEntity.quickCheck.getRecipeFor(blockEntity,
                                                                          level
                 ).orElse(null);
             }
 
             blockEntity.slotsChanged = false;
         }
-        boolean canBurn = canBurn(level.registryAccess(), blockEntity.holder, blockEntity);
+        boolean canBurn = canBurn(level.registryAccess(), blockEntity.recipe, blockEntity);
 
         if (!canBurn) {
             // Reset State
@@ -116,8 +114,8 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
                 if (blockEntity.cookingProgress == blockEntity.cookingTotalTime) {
                     blockEntity.cookingProgress = 0;
                     blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);
-                    if (burn(level.registryAccess(), blockEntity.holder, blockEntity, ingredientIndex)) {
-                        blockEntity.setRecipeUsed(blockEntity.holder);
+                    if (burn(level.registryAccess(), blockEntity.recipe, blockEntity, ingredientIndex)) {
+                        blockEntity.setRecipeUsed(blockEntity.recipe);
                     }
 
                     changed = true;
@@ -138,10 +136,10 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
 
     // Only check whether the input is able to smelt & output slot is available.
     // Won't modify BlockEntity.
-    private static boolean canBurn(RegistryAccess registryAccess, @javax.annotation.Nullable RecipeHolder<? extends AbstractCookingRecipe> recipe, CapacityFurnaceBlockEntity furnace) {
+    private static boolean canBurn(RegistryAccess registryAccess, @javax.annotation.Nullable AbstractCookingRecipe recipe, CapacityFurnaceBlockEntity furnace) {
         ItemStack ingredient = furnace.items.get(SLOT_INGREDIENT);
         if (!ingredient.isEmpty() && recipe != null) {
-            ItemStack simResult = recipe.value().assemble(new SingleRecipeInput(ingredient), registryAccess);
+            ItemStack simResult = recipe.assemble(furnace, registryAccess);
             return !simResult.isEmpty() && furnace.tryMergeToResult(simResult, true);
         }
         else {
@@ -149,10 +147,10 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
         }
     }
 
-    private static boolean burn(RegistryAccess registryAccess, @javax.annotation.Nullable RecipeHolder<? extends AbstractCookingRecipe> recipe, CapacityFurnaceBlockEntity furnace, int ingredientSlot) {
+    private static boolean burn(RegistryAccess registryAccess, @javax.annotation.Nullable AbstractCookingRecipe recipe, CapacityFurnaceBlockEntity furnace, int ingredientSlot) {
         if (recipe != null) {
             ItemStack ingredient = furnace.items.get(ingredientSlot);
-            ItemStack simResult = recipe.value().assemble(new SingleRecipeInput(ingredient), registryAccess);
+            ItemStack simResult = recipe.assemble(furnace, registryAccess);
 
             furnace.tryMergeToResult(simResult, false);
 
@@ -192,7 +190,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
             }
             for (int j = i + 1; j <= startSlot + 3; j++) {
                 ItemStack o = this.items.get(j);
-                if (!o.isEmpty() && ItemStack.isSameItemSameComponents(stack, o)) {
+                if (!o.isEmpty() && ItemStack.isSameItemSameTags(stack, o)) {
                     if (diff < o.getCount()) {
                         stack.grow(diff);
                         o.shrink(diff);
@@ -256,7 +254,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
         int i;
         for (i = slotStart; i < slotStart + 3; i++) {
             nextStack = this.items.get(i + 1);
-            if (!ItemStack.isSameItemSameComponents(stack, nextStack)) {
+            if (!ItemStack.isSameItemSameTags(stack, nextStack)) {
                 break;
             }
             stack = nextStack;
@@ -273,7 +271,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
                 }
                 return true;
             }
-            else if (ItemStack.isSameItemSameComponents(curr,
+            else if (ItemStack.isSameItemSameTags(curr,
                                                         stack
             ) && curr.getCount() + stack.getCount() <= curr.getMaxStackSize() && curr.getCount() <= this.getMaxStackSize()) {
                 if (!simulate) {
@@ -304,7 +302,7 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
                         if (curr.isEmpty()) {
                             this.items.set(i, remainder);
                         }
-                        else if (ItemStack.isSameItemSameComponents(curr,
+                        else if (ItemStack.isSameItemSameTags(curr,
                                                                     remainder
                         ) && curr.getCount() + remainder.getCount() <= curr.getMaxStackSize() && curr.getCount() <= this.getMaxStackSize()) {
                             curr.grow(remainder.getCount());
@@ -367,9 +365,12 @@ public class CapacityFurnaceBlockEntity extends AbstractFurnaceBlockEntity
     @Override
     public void setItem(int index, ItemStack stack) {
         ItemStack itemstack = this.items.get(index);
-        boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameComponents(itemstack, stack);
+        boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameTags(itemstack, stack);
         this.items.set(index, stack);
-        stack.limitSize(this.getMaxStackSize(stack));
+        if (stack.getCount() > this.getMaxStackSize()) {
+            stack.setCount(this.getMaxStackSize());
+        }
+
         if (index == 0 && !flag) {
             this.cookingTotalTime = getTotalCookTime(this.level, this);
             this.cookingProgress = 0;

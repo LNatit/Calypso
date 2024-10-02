@@ -15,14 +15,14 @@ import static com.lnatit.calypso.Calypso.MODID;
 
 public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
 {
-    public static final ResourceLocation FLAME_SPRITE = ResourceLocation.fromNamespaceAndPath(MODID,
-                                                                                              "container/recycle_bin/burning_flame"
+    public static final ResourceLocation FLAME_SPRITE = new ResourceLocation(MODID,
+                                                                             "textures/gui/sprites/container/recycle_bin/burning_flame.png"
     );
-    public static final ResourceLocation SPARK_SPRITE = ResourceLocation.fromNamespaceAndPath(MODID,
-                                                                                              "container/recycle_bin/destruction_spark"
+    public static final ResourceLocation SPARK_SPRITE = new ResourceLocation(MODID,
+                                                                             "textures/gui/sprites/container/recycle_bin/destruction_spark.png"
     );
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(MODID,
-                                                                                         "textures/gui/container/recycle_bin.png"
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MODID,
+                                                                        "textures/gui/container/recycle_bin.png"
     );
 
     public RecycleBinScreen(RecycleBinMenu menu, Inventory playerInventory, Component title) {
@@ -50,7 +50,7 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
         int j = (this.height - this.imageHeight) / 2;
         int x = i + 159;
         int y = j + 57;
-        guiGraphics.blitSprite(FLAME_SPRITE, x, y, 32, 32);
+        guiGraphics.blit(FLAME_SPRITE, x, y, 0, 0, 32, 32);
         guiGraphics.blit(TEXTURE, i, j, 0, 0, 180, this.imageHeight);
 
         this.menu.setDestoryCount(Sparkle.renderSparkles(this.menu.getDestroyCount(), guiGraphics, x, y));
@@ -73,7 +73,7 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
                 SPARKLES.add(new Sparkle());
             }
             // TODO 修改火花和火苗的相对位置，让两者视觉上对齐
-            SPARKLES.removeIf(s -> s.render(guiGraphics, flameX + 9, flameY + -9));
+            SPARKLES.removeIf(s -> s.render(guiGraphics, flameX + 9, flameY - 9));
             return SPARKLES.size();
         }
 
@@ -89,7 +89,7 @@ public class RecycleBinScreen extends AbstractContainerScreen<RecycleBinMenu>
             if (frame >= MAX_FRAMES) {
                 return true;
             }
-            guiGraphics.blitSprite(SPARK_SPRITE, 32, 960, 0, 32 * (START_FRAME + frame), sparkleX, sparkleY, 32, 32);
+            guiGraphics.blit(SPARK_SPRITE, sparkleX, sparkleY, 32, 32, 0, 32 * (START_FRAME + frame), 32, 32);
             return false;
         }
     }

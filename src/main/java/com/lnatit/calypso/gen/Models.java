@@ -5,8 +5,8 @@ import com.lnatit.calypso.block.CapacityFurnaceBlock;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.model.generators.*;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.minecraftforge.client.model.generators.*;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 import static com.lnatit.calypso.Calypso.MODID;
 
@@ -49,14 +49,14 @@ public class Models
             Block block = holder.get();
 
             // 定义纹理文件路径
-            ResourceLocation front = ResourceLocation.fromNamespaceAndPath(MODID, "block/capacity_furnace_front");
-            ResourceLocation side = ResourceLocation.fromNamespaceAndPath(MODID, "block/capacity_furnace_side");
-            ResourceLocation top = ResourceLocation.fromNamespaceAndPath(MODID, "block/capacity_furnace_top");
-            ResourceLocation front_on = ResourceLocation.fromNamespaceAndPath(MODID, "block/capacity_furnace_front_on");
+            ResourceLocation front = new ResourceLocation(MODID, "block/capacity_furnace_front");
+            ResourceLocation side = new ResourceLocation(MODID, "block/capacity_furnace_side");
+            ResourceLocation top = new ResourceLocation(MODID, "block/capacity_furnace_top");
+            ResourceLocation front_on = new ResourceLocation(MODID, "block/capacity_furnace_front_on");
 
             // 生成对应模型
             // 模型名称
-            String name = holder.getRegisteredName();
+            String name = holder.getId().getPath();
             // 默认模型（未点燃）
             ModelFile defaultModel = models().orientable(name , side, front, top);
             // 点燃的模型

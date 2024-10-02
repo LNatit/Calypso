@@ -2,12 +2,13 @@ package com.lnatit.calypso.block.entity;
 
 import com.lnatit.calypso.inventory.RecycleBinMenu;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -53,15 +54,15 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        ContainerHelper.loadAllItems(tag, this.items, registries);
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        ContainerHelper.loadAllItems(tag, this.items);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        ContainerHelper.saveAllItems(tag, this.items, registries);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        ContainerHelper.saveAllItems(tag, this.items);
     }
 
     @Override
@@ -81,13 +82,39 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
-        return this.items;
+    public boolean isEmpty() {
+        for(ItemStack itemstack : this.items) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> items) {
-        this.items = items;
+    public ItemStack getItem(int index) {
+        return this.items.get(index);
+    }
+
+    @Override
+    public ItemStack removeItem(int index, int count) {
+        ItemStack remainder = ContainerHelper.removeItem(this.items, index, count);
+        this.setChanged();
+        return remainder;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int index) {
+        ItemStack remainder =  ContainerHelper.takeItem(this.items, index);
+        this.setChanged();
+        return remainder;
+    }
+
+    @Override
+    public void setItem(int index, ItemStack stack) {
+        this.items.set(index, stack);
+        this.setChanged();
     }
 
     private void rearrangeItems() {
@@ -102,7 +129,7 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
                 if (curr.isEmpty()) {
                     firstEmpty = i;
                 }
-                else if (diff > 0 && ItemStack.isSameItemSameComponents(curr, input)) {
+                else if (diff > 0 && ItemStack.isSameItemSameTags(curr, input)) {
                     int count = curr.getCount();
                     if (count > diff) {
                         curr.shrink(diff);
@@ -146,5 +173,15 @@ public class RecycleBinBlockEntity extends BaseContainerBlockEntity
     public void setChanged() {
         super.setChanged();
         rearrangeItems();
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return Container.stillValidBlockEntity(this, player);
+    }
+
+    @Override
+    public void clearContent() {
+        this.items.clear();
     }
 }

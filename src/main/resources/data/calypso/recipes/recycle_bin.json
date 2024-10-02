@@ -1,0 +1,28 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "I": {
+            "item": "minecraft:iron_ingot"
+        },
+        "O": {
+            "item": "minecraft:flint_and_steel"
+        },
+        "X": [
+            {
+                "item": "minecraft:netherrack"
+            },
+            {
+                "item": "minecraft:campfire"
+            }
+        ]
+    },
+    "pattern": [
+        " I ",
+        "IOI",
+        "IXI"
+    ],
+    "result": {
+        "item": "calypso:recycle_bin"
+    }
+}

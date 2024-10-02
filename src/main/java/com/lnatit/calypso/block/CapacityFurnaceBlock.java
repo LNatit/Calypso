@@ -2,7 +2,6 @@ package com.lnatit.calypso.block;
 
 import com.lnatit.calypso.block.entity.CapacityFurnaceBlockEntity;
 import com.lnatit.calypso.misc.StatRegistry;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,12 +28,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class CapacityFurnaceBlock extends AbstractFurnaceBlock
 {
-    public static final MapCodec<CapacityFurnaceBlock> CODEC = simpleCodec(CapacityFurnaceBlock::new);
+//    public static final MapCodec<CapacityFurnaceBlock> CODEC = simpleCodec(CapacityFurnaceBlock::new);
 
-    @Override
-    protected MapCodec<? extends AbstractFurnaceBlock> codec() {
-        return CODEC;
-    }
+//    @Override
+//    protected MapCodec<? extends AbstractFurnaceBlock> codec() {
+//        return CODEC;
+//    }
 
     private CapacityFurnaceBlock(Properties properties) {
         super(properties);
@@ -68,7 +67,7 @@ public class CapacityFurnaceBlock extends AbstractFurnaceBlock
     }
 
     @Override
-    protected int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
+    public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
         // TODO
         return 0;
     }

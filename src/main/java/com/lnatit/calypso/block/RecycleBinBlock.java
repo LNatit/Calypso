@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.lnatit.calypso.block.entity.RecycleBinBlockEntity;
 import com.lnatit.calypso.misc.StatRegistry;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -54,7 +54,7 @@ public class RecycleBinBlock extends BaseEntityBlock
                             BooleanOp.OR
                     ).optimize()
             ));
-    public static final MapCodec<RecycleBinBlock> CODEC = simpleCodec(RecycleBinBlock::new);
+//    public static final MapCodec<RecycleBinBlock> CODEC = simpleCodec(RecycleBinBlock::new);
 
     private RecycleBinBlock(Properties properties) {
         super(properties);
@@ -65,10 +65,10 @@ public class RecycleBinBlock extends BaseEntityBlock
         this(Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
     }
 
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
+//    @Override
+//    protected MapCodec<? extends BaseEntityBlock> codec() {
+//        return CODEC;
+//    }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -76,17 +76,17 @@ public class RecycleBinBlock extends BaseEntityBlock
     }
 
     @Override
-    protected RenderShape getRenderShape(BlockState state) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return AABBS.get(state.getValue(FACING));
     }
 
     @Override
-    protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return getShape(state, level, pos, context);
     }
 
@@ -104,7 +104,7 @@ public class RecycleBinBlock extends BaseEntityBlock
     }
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         }
