@@ -8,7 +8,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import java.security.Provider;
 import java.util.concurrent.CompletableFuture;
 
 import static com.lnatit.calypso.Calypso.MODID;
@@ -27,5 +26,4 @@ public class DataGen
 
         gen.addProvider(event.includeClient(), new Tags.TagProvider(output, lookup, helper));
     }
-
 }
