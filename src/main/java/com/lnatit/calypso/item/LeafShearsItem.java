@@ -1,9 +1,11 @@
 package com.lnatit.calypso.item;
+
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,14 +31,14 @@ public class LeafShearsItem extends Item {
     public static final Set<ItemAbility> ACTIONS = Stream.of(
 //            SHEARS_DIG, // Loot
             SHEARS_HARVEST, // Beehive
-//            SHEARS_REMOVE_ARMOR, // Wolf Armor
+            SHEARS_REMOVE_ARMOR, // Wolf Armor
 //            SHEARS_CARVE, // Pumpkin to Carved
             SHEARS_DISARM, // Break Tripwire without trigger it
             SHEARS_TRIM // Disable plants growth
     ).collect(Collectors.toCollection(Sets::newIdentityHashSet));
 
     public LeafShearsItem(Properties properties) {
-		super(properties);
+        super(properties);
     }
 
     public static Tool createToolProperties() {
@@ -70,6 +72,27 @@ public class LeafShearsItem extends Item {
     }
 
     @Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
+        if (interactionTarget instanceof net.neoforged.neoforge.common.IShearable target) {
+            if (interactionTarget.level().isClientSide)
+                return InteractionResult.CONSUME;
+
+            BlockPos pos = interactionTarget.blockPosition();
+            if (target.isShearable(player, stack, interactionTarget.level(), pos)) {
+                target.onSheared(player, stack, interactionTarget.level(), pos)
+                        .forEach(drop -> target.spawnShearedDrop(interactionTarget.level(), pos, drop));
+                interactionTarget.gameEvent(GameEvent.SHEAR, player);
+                stack.hurtAndBreak(1,
+                        player, usedHand == net.minecraft.world.InteractionHand.MAIN_HAND ?
+                                net.minecraft.world.entity.EquipmentSlot.MAINHAND :
+                                net.minecraft.world.entity.EquipmentSlot.OFFHAND);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ACTIONS.contains(itemAbility);
     }
@@ -84,7 +107,7 @@ public class LeafShearsItem extends Item {
             Player player = context.getPlayer();
             ItemStack itemstack = context.getItemInHand();
             if (player instanceof ServerPlayer) {
-                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer)player, blockpos, itemstack);
+                CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockpos, itemstack);
             }
 
             level.setBlockAndUpdate(blockpos, to);
@@ -92,10 +115,8 @@ public class LeafShearsItem extends Item {
             if (player != null) {
                 itemstack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(context.getHand()));
             }
-
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-
         return super.useOn(context);
     }
 }

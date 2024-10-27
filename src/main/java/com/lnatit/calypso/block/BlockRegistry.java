@@ -3,7 +3,6 @@ package com.lnatit.calypso.block;
 import com.lnatit.calypso.block.entity.CapacityFurnaceBlockEntity;
 import com.lnatit.calypso.block.entity.RecycleBinBlockEntity;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -19,10 +18,10 @@ public class BlockRegistry
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<CapacityFurnaceBlock> CAPACITY_FURNACE = BLOCKS.register("capacity_furnace",
-                                                                                               CapacityFurnaceBlock::new
+            CapacityFurnaceBlock::new
     );
     public static final DeferredBlock<RecycleBinBlock> RECYCLE_BIN = BLOCKS.register("recycle_bin",
-                                                                                     RecycleBinBlock::new
+            RecycleBinBlock::new
     );
     public static final DeferredBlock<PhotoStand.PartBlock> PHOTO_STAND_PART = BLOCKS.register("photo_stand_part", PhotoStand.PartBlock::new);
     public static final DeferredBlock<PhotoStand.CoreBlock> PHOTO_STAND_CORE = BLOCKS.register("photo_stand_core", () -> new PhotoStand.CoreBlock(4));

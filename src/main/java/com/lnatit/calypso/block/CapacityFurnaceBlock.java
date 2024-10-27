@@ -14,11 +14,12 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
@@ -41,9 +42,13 @@ public class CapacityFurnaceBlock extends AbstractFurnaceBlock
     }
 
     public CapacityFurnaceBlock() {
-        this(Properties.of().mapColor(MapColor.STONE).instrument(
-                NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.5F).lightLevel(
-                holder -> holder.getValue(BlockStateProperties.LIT) ? 13 : 0));
+        this(
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .instrument(NoteBlockInstrument.BASEDRUM)
+                        .requiresCorrectToolForDrops()
+                        .strength(3.5F).lightLevel(Blocks.litBlockEmission(13))
+        );
     }
 
     @Nullable

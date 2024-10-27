@@ -3,6 +3,7 @@ package com.lnatit.calypso.gen;
 import com.lnatit.calypso.block.BlockRegistry;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
@@ -21,13 +22,14 @@ public class Tags
 
         @Override
         protected void addTags(HolderLookup.Provider provider) {
-            // TODO update it occasionally
-            tag(BlockRegistry.PHOTO_STAND)
-                    .add(BlockRegistry.PHOTO_STAND_CORE.get(), BlockRegistry.PHOTO_STAND_CORE_2.get(),
-                         BlockRegistry.PHOTO_STAND_CORE_1.get(), BlockRegistry.PHOTO_STAND_CORE_3.get(),
-                         BlockRegistry.PHOTO_STAND_CORE_5.get(), BlockRegistry.PHOTO_STAND_CORE_6.get(),
-                         BlockRegistry.PHOTO_STAND_PART.get()
-                    );
+//            // TODO update it occasionally
+//            tag(BlockRegistry.PHOTO_STAND)
+//                    .add(BlockRegistry.PHOTO_STAND_CORE.get(), BlockRegistry.PHOTO_STAND_CORE_2.get(),
+//                         BlockRegistry.PHOTO_STAND_CORE_1.get(), BlockRegistry.PHOTO_STAND_CORE_3.get(),
+//                         BlockRegistry.PHOTO_STAND_CORE_5.get(), BlockRegistry.PHOTO_STAND_CORE_6.get(),
+//                         BlockRegistry.PHOTO_STAND_PART.get()
+//                    );
+            this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(BlockRegistry.CAPACITY_FURNACE.get(), BlockRegistry.RECYCLE_BIN.get());
         }
     }
 }

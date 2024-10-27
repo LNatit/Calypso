@@ -18,7 +18,6 @@ public class Calypso
     public static final String MODID = "calypso";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-
     public Calypso(IEventBus modBus, ModContainer container)
     {
         ItemRegistry.ITEMS.register(modBus);

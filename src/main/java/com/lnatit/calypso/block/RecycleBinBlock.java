@@ -15,9 +15,11 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -62,7 +64,14 @@ public class RecycleBinBlock extends BaseEntityBlock
     }
 
     public RecycleBinBlock() {
-        this(Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(3.5F).noOcclusion());
+        this(
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.METAL)
+//                        .requiresCorrectToolForDrops()
+                        .strength(3.5F)
+                        .lightLevel(Blocks.litBlockEmission(13))
+                        .noOcclusion()
+        );
     }
 
     @Override
